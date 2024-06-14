@@ -1,0 +1,416 @@
+wandb: Currently logged in as: zihao626 (zihao626_). Use `wandb login --relogin` to force relogin
+wandb: - Waiting for wandb.init()...wandb: \ Waiting for wandb.init()...wandb: Tracking run with wandb version 0.17.1
+wandb: Run data is saved locally in /balsa/balsa/wandb/run-20240610_142926-jzy1q92p
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run apricot-plasma-39
+wandb: ⭐️ View project at https://wandb.ai/zihao626_/balsa
+wandb: 🚀 View run at https://wandb.ai/zihao626_/balsa/runs/jzy1q92p
+Looking up params by name: Baseline
+BalsaAgent params:
+{
+  adamw: None
+  agent_checkpoint: None
+  avoid_eq_filters: False
+  beam: 20
+  bs: 1024
+  bushy: True
+  check_hint: True
+  cls: <class 'experiments.Baseline'>
+  cost_model: "postgrescost"
+  cross_entropy: False
+  db: "imdbload"
+  dedup_training_data: True
+  drop_cache: True
+  dropout: 0.0
+  early_stop_on_skip_fraction: None
+  ema_decay: 0.95
+  engine: "postgres"
+  engine_dialect_query_dir: None
+  epochs: 100
+  epsilon_greedy: 0
+  epsilon_greedy_random_plan: False
+  epsilon_greedy_random_transform: False
+  epsilon_greedy_within_beam_search: False
+  explore_soft_v: False
+  explore_visit_counts: False
+  explore_visit_counts_latency_sort: False
+  explore_visit_counts_sort: False
+  final_decay_rate: None
+  finetune_out_mlp_only: False
+  generic_ops_only_for_min_card_cost: False
+  gradient_clip_val: 0
+  increment_iter_despite_timeouts: False
+  inherit_optimizer_state: False
+  init_experience: "data/initial_policy_data.pkl"
+  initial_timeout_ms: None
+  l2_lambda: 0
+  label_transform_running_stats: False
+  label_transforms: ['log1p', 'standardize']
+  linear_decay_to_zero: False
+  loss_type: None
+  lr: 0.001
+  lr_decay_iters: None
+  lr_decay_rate: None
+  lr_piecewise: None
+  on_policy: False
+  param_noise: 0.0
+  param_tau: 1.0
+  per_transition_sgd_steps: -1
+  perturb_query_features: None
+  physical_execution_hindsight: False
+  plan_physical: True
+  planner_config: None
+  pos_embs: True
+  prev_replay_buffers_glob: None
+  prev_replay_buffers_glob_val: None
+  prev_replay_keep_last_fraction: 1
+  query_dir: "queries/simple"
+  query_glob: ['1*.sql', '2*.sql', '3*.sql', '4*.sql']
+  real_use_plan_restrictions: True
+  reduce_lr_within_val_iter: False
+  relax_timeout_factor: None
+  relax_timeout_on_n_timeout_iters: None
+  replay_buffer_reset_at_iter: None
+  run_baseline: True
+  search_method: "beam_bk"
+  search_space_join_ops: ['Hash Join', 'Merge Join', 'Nested Loop']
+  search_space_scan_ops: ['Index Scan', 'Index Only Scan', 'Seq Scan']
+  search_until_n_complete_plans: 10
+  sim: True
+  sim_checkpoint: None
+  sim_data_collection_intermediate_goals: True
+  sim_query_featurizer: True
+  sim_use_plan_restrictions: True
+  skip_sim_init_iter_1p: False
+  skip_training_on_expert: True
+  skip_training_on_timeouts: False
+  special_timeout_label: True
+  test_after_n_iters: 0
+  test_every_n_iters: 1
+  test_query_glob: ['3*.sql']
+  test_using_retrained_model: False
+  timeout_slack: 2
+  track_model_moving_averages: False
+  tree_conv: True
+  tree_conv_version: None
+  update_label_stats_every_iter: True
+  use_adaptive_lr: None
+  use_adaptive_lr_decay_to_zero: None
+  use_cache: True
+  use_ema_source: False
+  use_last_n_iters: -1
+  use_local_execution: True
+  use_new_data_only: False
+  use_timeout: True
+  v2: True
+  val_iters: 500
+  validate_early_stop_patience: 3
+  validate_every_n_epochs: 5
+  validate_fraction: 0.1
+}
+Connected to ray!  Resources: {'pg': 1.0, 'object_store_memory': 4348221849.0, 'CPU': 16.0, 'memory': 8696443700.0, 'node:172.17.0.2': 1.0}
+Search space (old=query nodes; new=agent action space):
+old: ['Index Scan' 'Seq Scan'] ['Hash Join' 'Nested Loop'] ['FinalizeAggregate' 'Gather' 'Hash' 'Hash Join' 'Index Scan'
+ 'Nested Loop' 'PartialAggregate' 'Seq Scan' 'SimpleAggregate']
+new: ['Index Only Scan' 'Index Scan' 'Seq Scan'] ['Hash Join' 'Merge Join' 'Nested Loop'] ['FinalizeAggregate' 'Gather' 'Hash' 'Hash Join' 'Index Scan'
+ 'Nested Loop' 'PartialAggregate' 'Seq Scan' 'SimpleAggregate']
+14 train queries: ['1a', '1b', '1c', '1d', '2a', '2b', '2c', '2d', '3a', '3b', '3c', '4a', '4b', '4c']
+0 test queries: []
+plans_lib.FilterScansOrJoins()
+plans_lib.GatherUnaryFiltersInfo()
+postgres.EstimateFilterRows()
+24 unique filters
+{('company_name AS cn', "((cn.country_code)::text = '[de]'::text)"): 9792,
+ ('company_name AS cn', "((cn.country_code)::text = '[nl]'::text)"): 2185,
+ ('company_name AS cn', "((cn.country_code)::text = '[sm]'::text)"): 19,
+ ('company_name AS cn', "((cn.country_code)::text = '[us]'::text)"): 84732,
+ ('company_type AS ct', "((ct.kind)::text = 'production companies'::text)"): 1,
+ ('info_type AS it', "((it.info)::text = 'bottom 10 rank'::text)"): 1,
+ ('info_type AS it', "((it.info)::text = 'rating'::text)"): 1,
+ ('info_type AS it', "((it.info)::text = 'top 250 rank'::text)"): 1,
+ ('keyword AS k', "(k.keyword = 'character-name-in-title'::text)"): 1,
+ ('keyword AS k', "(k.keyword ~~ '%sequel%'::text)"): 13,
+ ('movie_companies AS mc', "((mc.note !~~ '%(as Metro-Goldwyn-Mayer Pictures)%'::text) AND ((mc.note ~~ '%(co-production)%'::text) OR (mc.note ~~ '%(presents)%'::text)))"): 27149,
+ ('movie_companies AS mc', "((mc.note !~~ '%(as Metro-Goldwyn-Mayer Pictures)%'::text) AND (mc.note ~~ '%(co-production)%'::text))"): 14028,
+ ('movie_companies AS mc', "(mc.note !~~ '%(as Metro-Goldwyn-Mayer Pictures)%'::text)"): 1328998,
+ ('movie_info AS mi', "(mi.info = 'Bulgaria'::text)"): 385,
+ ('movie_info AS mi', "(mi.info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Denish,Norwegian,German,USA,American}'::text[]))"): 674559,
+ ('movie_info AS mi', "(mi.info = ANY ('{Sweden,Norway,Germany,Denmark,Swedish,Denish,Norwegian,German}'::text[]))"): 139325,
+ ('movie_info_idx AS mi_idx', "(mi_idx.info > '2.0'::text)"): 801690,
+ ('movie_info_idx AS mi_idx', "(mi_idx.info > '5.0'::text)"): 518139,
+ ('movie_info_idx AS mi_idx', "(mi_idx.info > '9.0'::text)"): 9445,
+ ('title AS t', '((t.production_year >= 2005) AND (t.production_year <= 2010))'): 725345,
+ ('title AS t', '(t.production_year > 1990)'): 1747126,
+ ('title AS t', '(t.production_year > 2000)'): 1377608,
+ ('title AS t', '(t.production_year > 2005)'): 1023097,
+ ('title AS t', '(t.production_year > 2010)'): 390764}
+Dropping buffer cache.
+Running queries as-is (baseline PG performance)...
+---------------------------------------
+FinalizeAggregate cost=943.509
+  Gather cost=19590.49
+    PartialAggregate cost=18590.29
+      Nested Loop cost=18589.76
+        Hash Join cost=18549.03
+          Nested Loop cost=18546.47
+            Hash Join cost=15253.6
+              Seq Scan [movie_info_idx AS mi_idx] cost=13685.15
+              Hash cost=2.41
+                Seq Scan [info_type AS it] cost=2.41
+            Index Scan [movie_companies AS mc] cost=0.64
+          Hash cost=1.05
+            Seq Scan [company_type AS ct] cost=1.05
+        Index Scan [title AS t] cost=0.58
+
+
+q1a,943.5 (baseline)
+Execution time: 943.509
+---------------------------------------
+FinalizeAggregate cost=62.251
+  Gather cost=20198.08
+    PartialAggregate cost=19197.88
+      Hash Join cost=19190.58
+        Nested Loop cost=19168.5
+          Nested Loop cost=18220.15
+            Hash Join cost=15253.6
+              Seq Scan [movie_info_idx AS mi_idx] cost=13685.15
+              Hash cost=2.41
+                Seq Scan [info_type AS it] cost=2.41
+            Index Scan [title AS t] cost=0.58
+          Index Scan [movie_companies AS mc] cost=0.61
+        Hash cost=1.05
+          Seq Scan [company_type AS ct] cost=1.05
+
+
+q1b,62.3 (baseline)
+Execution time: 62.251
+---------------------------------------
+FinalizeAggregate cost=56.793
+  Gather cost=19506.29
+    PartialAggregate cost=18506.09
+      Nested Loop cost=18506.04
+        Hash Join cost=18484.69
+          Nested Loop cost=18482.86
+            Hash Join cost=15253.6
+              Seq Scan [movie_info_idx AS mi_idx] cost=13685.15
+              Hash cost=2.41
+                Seq Scan [info_type AS it] cost=2.41
+            Index Scan [movie_companies AS mc] cost=0.62
+          Hash cost=1.05
+            Seq Scan [company_type AS ct] cost=1.05
+        Index Scan [title AS t] cost=0.58
+
+
+q1c,56.8 (baseline)
+Execution time: 56.793
+---------------------------------------
+FinalizeAggregate cost=55.812
+  Gather cost=21043.26
+    PartialAggregate cost=20043.06
+      Hash Join cost=20029.22
+        Nested Loop cost=19988.25
+          Nested Loop cost=18207.43
+            Hash Join cost=15253.6
+              Seq Scan [movie_info_idx AS mi_idx] cost=13685.15
+              Hash cost=2.41
+                Seq Scan [info_type AS it] cost=2.41
+            Index Scan [title AS t] cost=0.58
+          Index Scan [movie_companies AS mc] cost=0.61
+        Hash cost=1.05
+          Seq Scan [company_type AS ct] cost=1.05
+
+
+q1d,55.8 (baseline)
+Execution time: 55.812
+---------------------------------------
+SimpleAggregate cost=8621.355
+  Nested Loop cost=3961.57
+    Nested Loop cost=3958.07
+      Nested Loop cost=3878.7
+        Nested Loop cost=3858.55
+          Seq Scan [keyword AS k] cost=2626.12
+          Index Scan [movie_keyword AS mk] cost=1229.38
+        Index Scan [movie_companies AS mc] cost=0.54
+      Index Scan [company_name AS cn] cost=0.45
+    Index Scan [title AS t] cost=0.49
+
+
+q2a,8621.4 (baseline)
+Execution time: 8621.355
+---------------------------------------
+SimpleAggregate cost=624.237
+  Nested Loop cost=3959.07
+    Nested Loop cost=3958.07
+      Nested Loop cost=3878.7
+        Nested Loop cost=3858.55
+          Seq Scan [keyword AS k] cost=2626.12
+          Index Scan [movie_keyword AS mk] cost=1229.38
+        Index Scan [movie_companies AS mc] cost=0.54
+      Index Scan [company_name AS cn] cost=0.45
+    Index Scan [title AS t] cost=0.49
+
+
+q2b,624.2 (baseline)
+Execution time: 624.237
+---------------------------------------
+SimpleAggregate cost=269.773
+  Nested Loop cost=3958.58
+    Nested Loop cost=3958.08
+      Nested Loop cost=3878.7
+        Nested Loop cost=3858.55
+          Seq Scan [keyword AS k] cost=2626.12
+          Index Scan [movie_keyword AS mk] cost=1229.38
+        Index Scan [movie_companies AS mc] cost=0.54
+      Index Scan [company_name AS cn] cost=0.45
+    Index Scan [title AS t] cost=0.49
+
+
+q2c,269.8 (baseline)
+Execution time: 269.773
+---------------------------------------
+SimpleAggregate cost=4175.585
+  Nested Loop cost=3975.07
+    Nested Loop cost=3895.69
+      Nested Loop cost=3875.12
+        Nested Loop cost=3858.55
+          Seq Scan [keyword AS k] cost=2626.12
+          Index Scan [movie_keyword AS mk] cost=1229.38
+        Index Scan [title AS t] cost=0.49
+      Index Scan [movie_companies AS mc] cost=0.54
+    Index Scan [company_name AS cn] cost=0.45
+
+
+q2d,4175.6 (baseline)
+Execution time: 4175.585
+---------------------------------------
+SimpleAggregate cost=3069.196
+  Nested Loop cost=18048.91
+    Nested Loop cost=17726.57
+      Nested Loop cost=17512.04
+        Seq Scan [keyword AS k] cost=2626.12
+        Index Scan [movie_keyword AS mk] cost=1142.02
+      Index Scan [title AS t] cost=0.49
+    Index Scan [movie_info AS mi] cost=1.81
+
+
+q3a,3069.2 (baseline)
+Execution time: 3069.196
+---------------------------------------
+SimpleAggregate cost=50.515
+  Nested Loop cost=17828.48
+    Nested Loop cost=17726.57
+      Nested Loop cost=17512.04
+        Seq Scan [keyword AS k] cost=2626.12
+        Index Scan [movie_keyword AS mk] cost=1142.02
+      Index Scan [title AS t] cost=0.49
+    Index Scan [movie_info AS mi] cost=1.49
+
+
+q3b,50.5 (baseline)
+Execution time: 50.515
+---------------------------------------
+SimpleAggregate cost=3954.615
+  Nested Loop cost=18314.74
+    Nested Loop cost=17726.57
+      Nested Loop cost=17512.04
+        Seq Scan [keyword AS k] cost=2626.12
+        Index Scan [movie_keyword AS mk] cost=1142.02
+      Index Scan [title AS t] cost=0.49
+    Index Scan [movie_info AS mi] cost=1.92
+
+
+q3c,3954.6 (baseline)
+Execution time: 3954.615
+---------------------------------------
+SimpleAggregate cost=594.254
+  Nested Loop cost=17746.18
+    Nested Loop cost=17744.17
+      Seq Scan [info_type AS it] cost=2.41
+      Nested Loop cost=17735.43
+        Nested Loop cost=17512.04
+          Seq Scan [keyword AS k] cost=2626.12
+          Index Scan [movie_keyword AS mk] cost=1142.02
+        Index Scan [movie_info_idx AS mi_idx] cost=0.5
+    Index Scan [title AS t] cost=0.49
+
+
+q4a,594.3 (baseline)
+Execution time: 594.254
+---------------------------------------
+SimpleAggregate cost=76.631
+  Gather cost=16402.38
+    Nested Loop cost=15402.28
+      Nested Loop cost=15378.01
+        Nested Loop cost=15367.19
+          Hash Join cost=15135.83
+            Seq Scan [movie_info_idx AS mi_idx] cost=15122.68
+            Hash cost=2.41
+              Seq Scan [info_type AS it] cost=2.41
+          Index Scan [title AS t] cost=6.61
+        Index Scan [movie_keyword AS mk] cost=1.7
+      Index Scan [keyword AS k] cost=0.44
+
+
+q4b,76.6 (baseline)
+Execution time: 76.631
+---------------------------------------
+SimpleAggregate cost=65.017
+  Nested Loop cost=17755.53
+    Nested Loop cost=17752.01
+      Seq Scan [info_type AS it] cost=2.41
+      Nested Loop cost=17739.81
+        Nested Loop cost=17512.04
+          Seq Scan [keyword AS k] cost=2626.12
+          Index Scan [movie_keyword AS mk] cost=1142.02
+        Index Scan [movie_info_idx AS mi_idx] cost=0.5
+    Index Scan [title AS t] cost=0.49
+
+
+q4c,65.0 (baseline)
+Execution time: 65.017
+latency_expert/workload (seconds): 22.62 (14 queries)
+latency_expert_test/workload (seconds): 0.00 (0 queries)
+Number of joins [3, 4], avg 3.8
+wandb: - 0.003 MB of 0.003 MB uploadedwandb: \ 0.003 MB of 0.003 MB uploadedwandb: | 0.003 MB of 0.003 MB uploadedwandb: / 0.003 MB of 0.003 MB uploadedwandb: - 0.017 MB of 0.038 MB uploaded (0.002 MB deduped)wandb: \ 0.038 MB of 0.038 MB uploaded (0.002 MB deduped)wandb: 
+wandb: Run history:
+wandb:              curr_value_iter ▁
+wandb:           latency_expert/q1a ▁
+wandb:           latency_expert/q1b ▁
+wandb:           latency_expert/q1c ▁
+wandb:           latency_expert/q1d ▁
+wandb:           latency_expert/q2a ▁
+wandb:           latency_expert/q2b ▁
+wandb:           latency_expert/q2c ▁
+wandb:           latency_expert/q2d ▁
+wandb:           latency_expert/q3a ▁
+wandb:           latency_expert/q3b ▁
+wandb:           latency_expert/q3c ▁
+wandb:           latency_expert/q4a ▁
+wandb:           latency_expert/q4b ▁
+wandb:           latency_expert/q4c ▁
+wandb:      latency_expert/workload ▁
+wandb: latency_expert_test/workload ▁
+wandb: 
+wandb: Run summary:
+wandb:              curr_value_iter 0
+wandb:           latency_expert/q1a 0.94351
+wandb:           latency_expert/q1b 0.06225
+wandb:           latency_expert/q1c 0.05679
+wandb:           latency_expert/q1d 0.05581
+wandb:           latency_expert/q2a 8.62135
+wandb:           latency_expert/q2b 0.62424
+wandb:           latency_expert/q2c 0.26977
+wandb:           latency_expert/q2d 4.17558
+wandb:           latency_expert/q3a 3.0692
+wandb:           latency_expert/q3b 0.05051
+wandb:           latency_expert/q3c 3.95461
+wandb:           latency_expert/q4a 0.59425
+wandb:           latency_expert/q4b 0.07663
+wandb:           latency_expert/q4c 0.06502
+wandb:      latency_expert/workload 22.61954
+wandb: latency_expert_test/workload 0
+wandb: 
+wandb: 🚀 View run apricot-plasma-39 at: https://wandb.ai/zihao626_/balsa/runs/jzy1q92p
+wandb: ⭐️ View project at: https://wandb.ai/zihao626_/balsa
+wandb: Synced 6 W&B file(s), 0 media file(s), 2 artifact file(s) and 1 other file(s)
+wandb: Find logs at: ./wandb/run-20240610_142926-jzy1q92p/logs
