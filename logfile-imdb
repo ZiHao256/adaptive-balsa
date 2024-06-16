@@ -735,3 +735,345 @@
 2024-06-16 02:55:20.413 UTC [3149592] LOG:  background worker "parallel worker" (PID 3698779) exited with exit code 1
 2024-06-16 02:55:20.426 UTC [3149592] LOG:  background worker "parallel worker" (PID 3698781) exited with exit code 1
 2024-06-16 02:55:20.489 UTC [3149592] LOG:  background worker "parallel worker" (PID 3698780) exited with exit code 1
+2024-06-16 02:57:45.746 UTC [3699537] ytzheng@imdbload ERROR:  canceling statement due to statement timeout
+2024-06-16 02:57:45.746 UTC [3699537] ytzheng@imdbload STATEMENT:  /*+ MergeJoin(cct1 ct cn cc kt k mc mk t mi it1)
+	 HashJoin(cct1 ct cn cc kt k mc mk t mi)
+	 HashJoin(ct cn cc kt k mc mk t mi)
+	 MergeJoin(cn cc kt k mc mk t mi)
+	 NestLoop(cc kt k mc mk t mi)
+	 HashJoin(cc kt k mc mk t)
+	 MergeJoin(kt k mc mk t)
+	 NestLoop(k mc mk t)
+	 HashJoin(k mc mk)
+	 MergeJoin(mc mk)
+	 IndexScan(cct1)
+	 SeqScan(ct)
+	 SeqScan(cn)
+	 SeqScan(cc)
+	 SeqScan(kt)
+	 IndexScan(k)
+	 SeqScan(mc)
+	 IndexScan(mk)
+	 IndexScan(t)
+	 IndexScan(mi)
+	 IndexScan(it1)
+	 Leading(((cct1 (ct (cn ((cc (kt ((k (mc mk)) t))) mi)))) it1)) */
+	explain (verbose, analyze, format json)
+	SELECT MIN(kt.kind) AS movie_kind,
+	       MIN(t.title) AS complete_us_internet_movie
+	FROM complete_cast AS cc,
+	     comp_cast_type AS cct1,
+	     company_name AS cn,
+	     company_type AS ct,
+	     info_type AS it1,
+	     keyword AS k,
+	     kind_type AS kt,
+	     movie_companies AS mc,
+	     movie_info AS mi,
+	     movie_keyword AS mk,
+	     title AS t
+	WHERE cct1.kind = 'complete+verified'
+	  AND cn.country_code = '[us]'
+	  AND it1.info = 'release dates'
+	  AND kt.kind IN ('movie',
+	                  'tv movie',
+	                  'video movie',
+	                  'video game')
+	  AND mi.note LIKE '%internet%'
+	  AND mi.info IS NOT NULL
+	  AND (mi.info LIKE 'USA:% 199%'
+	       OR mi.info LIKE 'USA:% 200%')
+	  AND t.production_year > 1990
+	  AND kt.id = t.kind_id
+	  AND t.id = mi.movie_id
+	  AND t.id = mk.movie_id
+	  AND t.id = mc.movie_id
+	  AND t.id = cc.movie_id
+	  AND mk.movie_id = mi.movie_id
+	  AND mk.movie_id = mc.movie_id
+	  AND mk.movie_id = cc.movie_id
+	  AND mi.movie_id = mc.movie_id
+	  AND mi.movie_id = cc.movie_id
+	  AND mc.movie_id = cc.movie_id
+	  AND k.id = mk.keyword_id
+	  AND it1.id = mi.info_type_id
+	  AND cn.id = mc.company_id
+	  AND ct.id = mc.company_type_id
+	  AND cct1.id = cc.status_id;
+	
+	
+2024-06-16 02:57:59.215 UTC [3700658] ytzheng@imdbload ERROR:  canceling statement due to statement timeout
+2024-06-16 02:57:59.215 UTC [3700658] ytzheng@imdbload STATEMENT:  /*+ MergeJoin(kt t mi_idx it2 cn ct mk mc mi k it1)
+	 MergeJoin(mi_idx it2 cn ct mk mc mi k it1)
+	 HashJoin(cn ct mk mc mi k it1)
+	 HashJoin(cn ct mk mc mi k)
+	 HashJoin(cn ct mk mc mi)
+	 MergeJoin(ct mk mc mi)
+	 NestLoop(mk mc mi)
+	 HashJoin(mk mc)
+	 NestLoop(mi_idx it2)
+	 HashJoin(kt t)
+	 SeqScan(kt)
+	 SeqScan(t)
+	 IndexScan(mi_idx)
+	 SeqScan(it2)
+	 SeqScan(cn)
+	 IndexScan(ct)
+	 SeqScan(mk)
+	 SeqScan(mc)
+	 IndexScan(mi)
+	 SeqScan(k)
+	 SeqScan(it1)
+	 Leading(((kt t) ((mi_idx it2) (((cn (ct ((mk mc) mi))) k) it1)))) */
+	explain (verbose, analyze, format json)
+	SELECT MIN(cn.name) AS movie_company,
+	       MIN(mi_idx.info) AS rating,
+	       MIN(t.title) AS western_violent_movie
+	FROM company_name AS cn,
+	     company_type AS ct,
+	     info_type AS it1,
+	     info_type AS it2,
+	     keyword AS k,
+	     kind_type AS kt,
+	     movie_companies AS mc,
+	     movie_info AS mi,
+	     movie_info_idx AS mi_idx,
+	     movie_keyword AS mk,
+	     title AS t
+	WHERE cn.country_code != '[us]'
+	  AND it1.info = 'countries'
+	  AND it2.info = 'rating'
+	  AND k.keyword IN ('murder',
+	                    'murder-in-title',
+	                    'blood',
+	                    'violence')
+	  AND kt.kind IN ('movie',
+	                  'episode')
+	  AND mc.note NOT LIKE '%(USA)%'
+	  AND mc.note LIKE '%(200%)%'
+	  AND mi.info IN ('Germany',
+	                  'German',
+	                  'USA',
+	                  'American')
+	  AND mi_idx.info < '7.0'
+	  AND t.production_year > 2009
+	  AND kt.id = t.kind_id
+	  AND t.id = mi.movie_id
+	  AND t.id = mk.movie_id
+	  AND t.id = mi_idx.movie_id
+	  AND t.id = mc.movie_id
+	  AND mk.movie_id = mi.movie_id
+	  AND mk.movie_id = mi_idx.movie_id
+	  AND mk.movie_id = mc.movie_id
+	  AND mi.movie_id = mi_idx.movie_id
+	  AND mi.movie_id = mc.movie_id
+	  AND mc.movie_id = mi_idx.movie_id
+	  AND k.id = mk.keyword_id
+	  AND it1.id = mi.info_type_id
+	  AND it2.id = mi_idx.info_type_id
+	  AND ct.id = mc.company_type_id
+	  AND cn.id = mc.company_id;
+	
+	
+2024-06-16 02:57:59.215 UTC [3700661] FATAL:  terminating connection due to administrator command
+2024-06-16 02:57:59.215 UTC [3700661] STATEMENT:  /*+ MergeJoin(kt t mi_idx it2 cn ct mk mc mi k it1)
+	 MergeJoin(mi_idx it2 cn ct mk mc mi k it1)
+	 HashJoin(cn ct mk mc mi k it1)
+	 HashJoin(cn ct mk mc mi k)
+	 HashJoin(cn ct mk mc mi)
+	 MergeJoin(ct mk mc mi)
+	 NestLoop(mk mc mi)
+	 HashJoin(mk mc)
+	 NestLoop(mi_idx it2)
+	 HashJoin(kt t)
+	 SeqScan(kt)
+	 SeqScan(t)
+	 IndexScan(mi_idx)
+	 SeqScan(it2)
+	 SeqScan(cn)
+	 IndexScan(ct)
+	 SeqScan(mk)
+	 SeqScan(mc)
+	 IndexScan(mi)
+	 SeqScan(k)
+	 SeqScan(it1)
+	 Leading(((kt t) ((mi_idx it2) (((cn (ct ((mk mc) mi))) k) it1)))) */
+	explain (verbose, analyze, format json)
+	SELECT MIN(cn.name) AS movie_company,
+	       MIN(mi_idx.info) AS rating,
+	       MIN(t.title) AS western_violent_movie
+	FROM company_name AS cn,
+	     company_type AS ct,
+	     info_type AS it1,
+	     info_type AS it2,
+	     keyword AS k,
+	     kind_type AS kt,
+	     movie_companies AS mc,
+	     movie_info AS mi,
+	     movie_info_idx AS mi_idx,
+	     movie_keyword AS mk,
+	     title AS t
+	WHERE cn.country_code != '[us]'
+	  AND it1.info = 'countries'
+	  AND it2.info = 'rating'
+	  AND k.keyword IN ('murder',
+	                    'murder-in-title',
+	                    'blood',
+	                    'violence')
+	  AND kt.kind IN ('movie',
+	                  'episode')
+	  AND mc.note NOT LIKE '%(USA)%'
+	  AND mc.note LIKE '%(200%)%'
+	  AND mi.info IN ('Germany',
+	                  'German',
+	                  'USA',
+	                  'American')
+	  AND mi_idx.info < '7.0'
+	  AND t.production_year > 2009
+	  AND kt.id = t.kind_id
+	  AND t.id = mi.movie_id
+	  AND t.id = mk.movie_id
+	  AND t.id = mi_idx.movie_id
+	  AND t.id = mc.movie_id
+	  AND mk.movie_id = mi.movie_id
+	  AND mk.movie_id = mi_idx.movie_id
+	  AND mk.movie_id = mc.movie_id
+	  AND mi.movie_id = mi_idx.movie_id
+	  AND mi.movie_id = mc.movie_id
+	  AND mc.movie_id = mi_idx.movie_id
+	  AND k.id = mk.keyword_id
+	  AND it1.id = mi.info_type_id
+	  AND it2.id = mi_idx.info_type_id
+	  AND ct.id = mc.company_type_id
+	  AND cn.id = mc.company_id;
+	
+	
+2024-06-16 02:57:59.215 UTC [3700660] FATAL:  terminating connection due to administrator command
+2024-06-16 02:57:59.215 UTC [3700660] STATEMENT:  /*+ MergeJoin(kt t mi_idx it2 cn ct mk mc mi k it1)
+	 MergeJoin(mi_idx it2 cn ct mk mc mi k it1)
+	 HashJoin(cn ct mk mc mi k it1)
+	 HashJoin(cn ct mk mc mi k)
+	 HashJoin(cn ct mk mc mi)
+	 MergeJoin(ct mk mc mi)
+	 NestLoop(mk mc mi)
+	 HashJoin(mk mc)
+	 NestLoop(mi_idx it2)
+	 HashJoin(kt t)
+	 SeqScan(kt)
+	 SeqScan(t)
+	 IndexScan(mi_idx)
+	 SeqScan(it2)
+	 SeqScan(cn)
+	 IndexScan(ct)
+	 SeqScan(mk)
+	 SeqScan(mc)
+	 IndexScan(mi)
+	 SeqScan(k)
+	 SeqScan(it1)
+	 Leading(((kt t) ((mi_idx it2) (((cn (ct ((mk mc) mi))) k) it1)))) */
+	explain (verbose, analyze, format json)
+	SELECT MIN(cn.name) AS movie_company,
+	       MIN(mi_idx.info) AS rating,
+	       MIN(t.title) AS western_violent_movie
+	FROM company_name AS cn,
+	     company_type AS ct,
+	     info_type AS it1,
+	     info_type AS it2,
+	     keyword AS k,
+	     kind_type AS kt,
+	     movie_companies AS mc,
+	     movie_info AS mi,
+	     movie_info_idx AS mi_idx,
+	     movie_keyword AS mk,
+	     title AS t
+	WHERE cn.country_code != '[us]'
+	  AND it1.info = 'countries'
+	  AND it2.info = 'rating'
+	  AND k.keyword IN ('murder',
+	                    'murder-in-title',
+	                    'blood',
+	                    'violence')
+	  AND kt.kind IN ('movie',
+	                  'episode')
+	  AND mc.note NOT LIKE '%(USA)%'
+	  AND mc.note LIKE '%(200%)%'
+	  AND mi.info IN ('Germany',
+	                  'German',
+	                  'USA',
+	                  'American')
+	  AND mi_idx.info < '7.0'
+	  AND t.production_year > 2009
+	  AND kt.id = t.kind_id
+	  AND t.id = mi.movie_id
+	  AND t.id = mk.movie_id
+	  AND t.id = mi_idx.movie_id
+	  AND t.id = mc.movie_id
+	  AND mk.movie_id = mi.movie_id
+	  AND mk.movie_id = mi_idx.movie_id
+	  AND mk.movie_id = mc.movie_id
+	  AND mi.movie_id = mi_idx.movie_id
+	  AND mi.movie_id = mc.movie_id
+	  AND mc.movie_id = mi_idx.movie_id
+	  AND k.id = mk.keyword_id
+	  AND it1.id = mi.info_type_id
+	  AND it2.id = mi_idx.info_type_id
+	  AND ct.id = mc.company_type_id
+	  AND cn.id = mc.company_id;
+	
+	
+2024-06-16 02:57:59.263 UTC [3149592] LOG:  background worker "parallel worker" (PID 3700661) exited with exit code 1
+2024-06-16 02:57:59.271 UTC [3149592] LOG:  background worker "parallel worker" (PID 3700660) exited with exit code 1
+2024-06-16 03:06:48.287 UTC [3703898] ytzheng@imdbload ERROR:  canceling statement due to statement timeout
+2024-06-16 03:06:48.287 UTC [3703898] ytzheng@imdbload STATEMENT:  /*+ MergeJoin(k ct mk mc t mi cn at it1)
+	 HashJoin(k ct mk mc t mi cn at)
+	 HashJoin(k ct mk mc t mi cn)
+	 NestLoop(ct mk mc t mi cn)
+	 NestLoop(ct mk mc t mi)
+	 HashJoin(ct mk mc t)
+	 MergeJoin(ct mk mc)
+	 HashJoin(mk mc)
+	 SeqScan(k)
+	 IndexScan(ct)
+	 SeqScan(mk)
+	 IndexScan(mc)
+	 SeqScan(t)
+	 IndexScan(mi)
+	 IndexScan(cn)
+	 IndexScan(at)
+	 SeqScan(it1)
+	 Leading((((k ((((ct (mk mc)) t) mi) cn)) at) it1)) */
+	explain (verbose, analyze, format json)
+	SELECT MIN(mi.info) AS release_date,
+	       MIN(t.title) AS modern_american_internet_movie
+	FROM aka_title AS at,
+	     company_name AS cn,
+	     company_type AS ct,
+	     info_type AS it1,
+	     keyword AS k,
+	     movie_companies AS mc,
+	     movie_info AS mi,
+	     movie_keyword AS mk,
+	     title AS t
+	WHERE cn.country_code = '[us]'
+	  AND it1.info = 'release dates'
+	  AND mi.note LIKE '%internet%'
+	  AND mi.info IS NOT NULL
+	  AND (mi.info LIKE 'USA:% 199%'
+	       OR mi.info LIKE 'USA:% 200%')
+	  AND t.production_year > 1990
+	  AND t.id = at.movie_id
+	  AND t.id = mi.movie_id
+	  AND t.id = mk.movie_id
+	  AND t.id = mc.movie_id
+	  AND mk.movie_id = mi.movie_id
+	  AND mk.movie_id = mc.movie_id
+	  AND mk.movie_id = at.movie_id
+	  AND mi.movie_id = mc.movie_id
+	  AND mi.movie_id = at.movie_id
+	  AND mc.movie_id = at.movie_id
+	  AND k.id = mk.keyword_id
+	  AND it1.id = mi.info_type_id
+	  AND cn.id = mc.company_id
+	  AND ct.id = mc.company_type_id;
+	
+	
