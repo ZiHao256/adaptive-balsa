@@ -19,7 +19,7 @@ DATA = pg_hint_plan--*.sql
 EXTRA_CLEAN = sql/ut-fdw.sql expected/ut-fdw.out RPMS
 
 # PG_CONFIG = pg_config
-PG_CONFIG = /data/postgresql-12.5/bin/pg_config
+PG_CONFIG = /data/ytzheng/postgresql-12.5/bin/pg_config
 PGXS := $(shell $(PG_CONFIG) --pgxs)
 include $(PGXS)
 

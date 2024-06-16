@@ -18,11 +18,11 @@ set -ex
 DATA_DIR=$1
 DBNAME=${2:-imdbload}
 
-createdb $DBNAME
+# createdb $DBNAME
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-psql $DBNAME -f "$DIR/schema.sql"
-psql $DBNAME -f "$DIR/fkindexes.sql"
+# psql $DBNAME -f "$DIR/schema.sql"
+# psql $DBNAME -f "$DIR/fkindexes.sql"
 
 pushd $DATA_DIR
 psql $DBNAME -c "\copy name from '$1/name.csv' escape '\' csv header" &

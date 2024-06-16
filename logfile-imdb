@@ -1,0 +1,33 @@
+2024-06-15 05:31:47.991 UTC [3141599] LOG:  starting PostgreSQL 12.5 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2024-06-15 05:31:47.992 UTC [3141599] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2024-06-15 05:31:47.992 UTC [3141599] LOG:  listening on IPv6 address "::", port 5432
+2024-06-15 05:31:48.029 UTC [3141599] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-06-15 05:31:48.475 UTC [3141600] LOG:  database system was shut down at 2024-06-15 05:31:46 UTC
+2024-06-15 05:31:48.509 UTC [3141599] LOG:  database system is ready to accept connections
+2024-06-15 05:32:07.457 UTC [3141609] LOG:  checkpoints are occurring too frequently (18 seconds apart)
+2024-06-15 05:32:07.457 UTC [3141609] HINT:  Consider increasing the configuration parameter "max_wal_size".
+2024-06-15 05:32:31.379 UTC [3141609] LOG:  checkpoints are occurring too frequently (24 seconds apart)
+2024-06-15 05:32:31.379 UTC [3141609] HINT:  Consider increasing the configuration parameter "max_wal_size".
+2024-06-15 05:43:20.576 UTC [3141681] ytzheng@imdbload ERROR:  canceling statement due to user request
+2024-06-15 05:43:20.576 UTC [3141681] ytzheng@imdbload CONTEXT:  COPY cast_info, line 26598739: "26598738,2604936,888573,,(drama developed by) (as Toksvig),,4"
+2024-06-15 05:43:20.576 UTC [3141681] ytzheng@imdbload STATEMENT:  COPY  cast_info FROM STDIN escape '\' csv header
+2024-06-15 05:46:05.177 UTC [3141599] LOG:  received fast shutdown request
+2024-06-15 05:46:05.244 UTC [3141599] LOG:  aborting any active transactions
+2024-06-15 05:46:05.244 UTC [3146568] FATAL:  terminating autovacuum process due to administrator command
+2024-06-15 05:46:05.245 UTC [3141599] LOG:  background worker "logical replication launcher" (PID 3141614) exited with exit code 1
+2024-06-15 05:46:05.584 UTC [3141609] LOG:  shutting down
+2024-06-15 05:46:13.404 UTC [3141599] LOG:  database system is shut down
+2024-06-15 05:49:54.254 UTC [3149592] LOG:  starting PostgreSQL 12.5 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit
+2024-06-15 05:49:54.254 UTC [3149592] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2024-06-15 05:49:54.254 UTC [3149592] LOG:  listening on IPv6 address "::", port 5432
+2024-06-15 05:49:54.300 UTC [3149592] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2024-06-15 05:49:54.571 UTC [3149599] LOG:  database system was shut down at 2024-06-15 05:46:11 UTC
+2024-06-15 05:49:54.606 UTC [3149592] LOG:  database system is ready to accept connections
+2024-06-15 05:49:54.642 UTC [3149608] ytzheng@postgres ERROR:  database "imdbload" already exists
+2024-06-15 05:49:54.642 UTC [3149608] ytzheng@postgres STATEMENT:  CREATE DATABASE imdbload;
+2024-06-15 05:50:26.997 UTC [3149794] ytzheng@immmmmmdbload FATAL:  database "immmmmmdbload" does not exist
+2024-06-15 06:08:58.962 UTC [3155894] FATAL:  lock file "postmaster.pid" already exists
+2024-06-15 06:08:58.962 UTC [3155894] HINT:  Is another postmaster (PID 3149592) running in data directory "/data/ytzheng/imdb"?
+2024-06-15 15:09:24.937 UTC [3401450] [unknown]@[unknown] LOG:  could not receive data from client: Connection reset by peer
+2024-06-15 15:14:24.647 UTC [3402913] [unknown]@[unknown] LOG:  could not receive data from client: Connection reset by peer
+2024-06-15 15:29:04.911 UTC [3408310] [unknown]@[unknown] LOG:  could not receive data from client: Connection reset by peer

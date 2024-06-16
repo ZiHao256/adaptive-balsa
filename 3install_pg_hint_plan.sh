@@ -6,4 +6,4 @@ cd pg_hint_plan
 # vim Makefile
 make clean
 make
-sudo make install
+make install

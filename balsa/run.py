@@ -68,6 +68,8 @@ from pg_executor import dbmsx_executor
 import train_utils
 import experiments  # noqa # pylint: disable=unused-import
 
+wandb.login(key='c00b298ea2e8937727495c29b2c5596da6515f23')
+
 FLAGS = flags.FLAGS
 flags.DEFINE_string('run', 'Balsa_JOBRandSplit', 'Experiment config to run.')
 flags.DEFINE_boolean('local', False,
@@ -2140,14 +2142,14 @@ def Main(argv):
 
     p.use_local_execution = FLAGS.local
     # Override params here for quick debugging.
-    p.sim_checkpoint = None
+    # p.sim_checkpoint = None
     # p.epochs = 1
-    p.val_iters = 10
-    p.query_dir = 'queries/simple'
-    p.query_glob = ['1*.sql', '2*.sql']
-    p.test_query_glob = ['2*.sql']
+    # p.val_iters = 10
+    # p.query_dir = 'queries/simple'
+    # p.query_glob = ['1*.sql', '2*.sql']
+    # p.test_query_glob = ['2*.sql']
     # p.test_query_glob = ['7c.sql']
-    p.search_until_n_complete_plans = 1
+    # p.search_until_n_complete_plans = 1
 
     agent = BalsaAgent(p)
     agent.Run()
