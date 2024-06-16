@@ -1,4 +1,4 @@
-构建docker容器
+构建docker容器(可选)
 1. `bash docker_build.sh`
 2. `bash docker_run.sh`
 
